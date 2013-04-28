@@ -14,19 +14,19 @@ SED=`which sed`
 CURRENT_DIR=`dirname $0`
  
 if [ -z $1 ]; then
-	echo "No domain name given"
-	exit 1
+    echo "No domain name given"
+    exit 1
 fi
 DOMAIN=$1
  
 # check the domain is valid!
 PATTERN="^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$";
 if [[ "$DOMAIN" =~ $PATTERN ]]; then
-	DOMAIN=`echo $DOMAIN | tr '[A-Z]' '[a-z]'`
-	echo "Removing vhost for:" $DOMAIN
+    DOMAIN=`echo $DOMAIN | tr '[A-Z]' '[a-z]'`
+    echo "Removing vhost for:" $DOMAIN
 else
-	echo "invalid domain name"
-	exit 1 
+    echo "invalid domain name"
+    exit 1 
 fi
  
 echo "What is the username for this site?"
