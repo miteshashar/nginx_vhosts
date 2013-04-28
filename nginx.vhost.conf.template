@@ -1,0 +1,51 @@
+server {
+  server_name @@HOSTNAME@@ www.@@HOSTNAME@@;
+  root "@@PATH@@";
+
+  index index.php;
+  client_max_body_size 10m;
+
+	access_log @@LOG_PATH@@/access.log;
+	error_log @@LOG_PATH@@/error.log;
+	
+	if ($http_user_agent ~* (Baiduspider|webalta|nikto|wkito|pikto|scan|acunetix|morfeus|webcollage|youdao) ) {
+       return 401;
+    }
+
+    if ($http_user_agent ~* (HTTrack|clshttp|archiver|loader|email|harvest|extract|grab|miner) ) {
+       return 401;
+    }
+
+	location / {
+			try_files $uri $uri/ /index.php$uri?$args;
+	}
+	
+	location ~ "^(.+\.php)($|/)" {
+        fastcgi_split_path_info ^(.+\.php)(.*)$;
+ 
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        fastcgi_param SCRIPT_NAME $fastcgi_script_name;
+        fastcgi_param PATH_INFO $fastcgi_path_info;
+		fastcgi_param SERVER_NAME $host;
+		
+        if ($uri !~ "^/uploads/") {
+            fastcgi_pass   unix:@@SOCKET@@;
+        }
+        include        fastcgi_params;
+    }
+
+
+	location ~* \.(js|css|png|jpg|jpeg|gif|ico)$ {
+			expires max;
+			log_not_found off;
+			access_log off;
+	}
+	
+	location ~* \.(html|htm)$ {
+		expires 30m;
+	}
+ 
+	location ~* /\.(ht|git|svn) {
+		deny  all;
+	}
+}
