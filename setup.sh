@@ -4,6 +4,7 @@
 # Created:   11/08/2011
 # Modified:   07/01/2012
 # Modified:   27/11/2012
+# Modified: 05/06/2013 - Added support for sftp + /var/www < Matteo Crippa >
 
 # Modify the following to match your system
 NGINX_CONFIG='/etc/nginx/sites-available'
@@ -31,8 +32,8 @@ else
     exit 1 
 fi
 
-# Create a new user!
-echo "Please specify the username for this site?"
+# Create a new user
+echo "Please specify the sftp username for this site:"
 read USERNAME
 adduser $USERNAME
 
@@ -46,11 +47,11 @@ $SED -i "s#@@PATH@@#\/var\/www\/"$DOMAIN$PUBLIC_HTML_DIR"#g" $CONFIG
 $SED -i "s/@@LOG_PATH@@/\/var/\www\/$DOMAIN\/logs/g" $CONFIG
 $SED -i "s#@@SOCKET@@#/var/run/"$DOMAIN"_fpm.sock#g" $CONFIG
 
-echo "How many FPM servers would you like by default:"
+echo "How many FPM servers would you like by default: (suggested 2)"
 read FPM_SERVERS
-echo "Min number of FPM servers would you like:"
+echo "Min number of FPM servers would you like: (suggested 1)"
 read MIN_SERVERS
-echo "Max number of FPM servers would you like:"
+echo "Max number of FPM servers would you like: (suggested 5)"
 read MAX_SERVERS
 # Now we need to create a new php fpm pool config
 FPMCONF="$PHP_INI_DIR/$DOMAIN.pool.conf"
