@@ -44,7 +44,7 @@ CONFIG=$NGINX_CONFIG/$DOMAIN.conf
 cp $CURRENT_DIR/nginx.vhost.conf.template $CONFIG
 $SED -i "s/@@HOSTNAME@@/$DOMAIN/g" $CONFIG
 $SED -i "s#@@PATH@@#\/var\/www\/"$DOMAIN$PUBLIC_HTML_DIR"#g" $CONFIG
-$SED -i "s/@@LOG_PATH@@/\/var/\www\/$DOMAIN\/logs/g" $CONFIG
+$SED -i "s/@@LOG_PATH@@/\/var\/www\/$DOMAIN\/logs/g" $CONFIG
 $SED -i "s#@@SOCKET@@#/var/run/"$DOMAIN"_fpm.sock#g" $CONFIG
 
 echo "How many FPM servers would you like by default: (suggested 2)"
