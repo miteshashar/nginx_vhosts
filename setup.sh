@@ -34,7 +34,6 @@ fi
 # Create a new user!
 echo "Please specify the username for this site?"
 read USERNAME
-HOME_DIR=$USERNAME
 adduser $USERNAME
 
 PUBLIC_HTML_DIR='/htdocs'
