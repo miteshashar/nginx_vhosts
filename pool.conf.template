@@ -2,14 +2,14 @@
 ; pool name ('www' here)
 [@@USER@@]
 
-listen = /var/run/@@USER@@_fpm.sock
+listen = /var/run/@@DOMAIN@@_fpm.sock
 
 ;listen.backlog = -1
-;listen.allowed_clients = 127.0.0.1
+listen.allowed_clients = 127.0.0.1
 
-listen.owner = @@USER@@
-listen.group = @@USER@@
-listen.mode = 0660
+listen.owner = root
+listen.group = root
+;listen.mode = 0660
 
 user = @@USER@@
 group = @@USER@@

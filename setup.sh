@@ -59,6 +59,7 @@ FPMCONF="$PHP_INI_DIR/$DOMAIN.pool.conf"
 cp $CURRENT_DIR/pool.conf.template $FPMCONF
 
 $SED -i "s/@@USER@@/$USERNAME/g" $FPMCONF
+$SED -i "s/@@DOMAIN@@/$DOMAIN/g" $FPMCONF
 $SED -i "s/@@HOME_DIR@@/\/var\/www\/$DOMAIN/g" $FPMCONF
 $SED -i "s/@@START_SERVERS@@/$FPM_SERVERS/g" $FPMCONF
 $SED -i "s/@@MIN_SERVERS@@/$MIN_SERVERS/g" $FPMCONF
