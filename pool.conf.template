@@ -49,5 +49,5 @@ chdir = /
  
 ;catch_workers_output = yes
  
-php_admin_value[session.save_path] = "@@HOME_DIR@@/_sessions"
+php_admin_value[session.save_path] = "@@HOME_DIR@@/sessions"
 php_admin_value[open_basedir] = "@@HOME_DIR@@:/usr/share/pear:/usr/share/php:/tmp:/usr/local/lib/php"
