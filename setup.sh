@@ -35,7 +35,7 @@ fi
 # Create a new user
 echo "Please specify the sftp username for this site:"
 read USERNAME
-adduser $USERNAME
+useradd $USERNAME
 
 PUBLIC_HTML_DIR='/htdocs'
 
