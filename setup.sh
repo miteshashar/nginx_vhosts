@@ -91,7 +91,8 @@ chown root:root /var/www/$DOMAIN
 chown -R $USERNAME:$USERNAME /var/www/$DOMAIN/htdocs 
 chmod -R g+rw /var/www/$DOMAIN/htdocs
 
-#$NGINX_INIT reload
-#$PHP_FPM_INIT restart
+$NGINX_INIT reload
+$PHP_FPM_INIT restart
 
 echo -e "\nSite Created for $DOMAIN with PHP support"
+echo -e "\n\nIMPORTANT you need to set $USERNAME password using passwd"
