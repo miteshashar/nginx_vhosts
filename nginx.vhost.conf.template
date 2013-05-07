@@ -1,5 +1,13 @@
+# force redirect www to non-www
 server {
-  server_name @@HOSTNAME@@ www.@@HOSTNAME@@;
+	listen 80;
+	server_name www.@@HOSTNAME@@;
+	return 301 $scheme://@@HOSTNAME@@$request_uri;
+}
+
+# server setup
+server {
+  server_name @@HOSTNAME@@;
   root "@@PATH@@";
 
   index index.php;
