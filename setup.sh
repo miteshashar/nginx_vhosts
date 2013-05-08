@@ -28,16 +28,26 @@ if [[ "$DOMAIN" =~ $PATTERN ]]; then
     DOMAIN=`echo $DOMAIN | tr '[A-Z]' '[a-z]'`
     echo "Creating hosting for:" $DOMAIN
 else
-    echo "invalid domain name"
+    echo "Invalid domain name"
     exit 1 
+fi
+
+
+# Ask for subdomain (default www)
+echo "Are you configuring the www or no-www domain (y/n)?"
+read CHANGEROOT
+if [ $CHANGEROOT == "n" ]; then
+    echo "Enter the subdomain you are configuring"
+    read DIR
+    PUBLIC_HTML_DIR='/'$DIR
+else
+    PUBLIC_HTML_DIR='/www'
 fi
 
 # Create a new user
 echo "Please specify the sftp username for this site:"
 read USERNAME
 useradd $USERNAME
-
-PUBLIC_HTML_DIR='/htdocs'
 
 # Now we need to copy the virtual host template
 CONFIG=$NGINX_CONFIG/$DOMAIN.conf
@@ -79,7 +89,7 @@ chmod 600 $CONFIG
 ln -s $CONFIG $NGINX_SITES_ENABLED/$DOMAIN.conf
 
 # create web dirs
-mkdir -p /var/www/$DOMAIN/htdocs
+mkdir -p /var/www/$DOMAIN/www
 mkdir /var/www/$DOMAIN/logs
 mkdir /var/www/$DOMAIN/sessions
 
@@ -88,8 +98,8 @@ usermod -d /var/www/$DOMAIN $USERNAME
 chown root:root /var/www/$DOMAIN
 
 # set directory permission
-chown -R $USERNAME:$USERNAME /var/www/$DOMAIN/htdocs 
-chmod -R g+rw /var/www/$DOMAIN/htdocs
+chown -R $USERNAME:$USERNAME /var/www/$DOMAIN/www 
+chmod -R g+rw /var/www/$DOMAIN/www
 
 $NGINX_INIT reload
 $PHP_FPM_INIT restart
