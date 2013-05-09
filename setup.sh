@@ -1,11 +1,12 @@
 #!/bin/bash
-# @author: Seb Dangerfield
+# @author: Seb Dangerfield, Matteo Crippa
 # http://www.sebdangerfield.me.uk/?p=513 
 # Created:   11/08/2011
 # Modified:   07/01/2012
 # Modified:   27/11/2012
 # Modified: 05/06/2013 - Added support for sftp + /var/www < Matteo Crippa >
 # Modified: 08/06/2013 - Moved to /srv/www and subdomain support
+# Modified: 09/06/2013 - Added support with Wordpress dedicated template
 
 # TODO: new way to handle, system asks for domain, then for subdomain (www and no-www) are used at the same way.
 # TODO: testing
@@ -14,7 +15,6 @@
 # /srv/www/domain/subdomain/htdocs
 # /srv/www/domain/subdomain/_session
 # /srv/www/domain/subdomain/_logs
-
 
 
 # Modify the following to match your system
@@ -56,6 +56,15 @@ else
     SUB='www'
 fi
 
+# Check if you are installing Wordpress
+echo "Are you installing wordpress? (y/n)"
+read WP
+if [ $WP == "y" ]; then
+    TEMPLATE='nginx.wordpress.vhost.conf.template'
+else
+    TEMPLATE='nginx.vhost.conf.template'
+fi
+
 # Create a new user
 echo "Please specify the sftp username for this site:"
 read USERNAME
@@ -63,7 +72,7 @@ useradd $USERNAME
 
 # Now we need to copy the virtual host template
 CONFIG=$NGINX_CONFIG/$SUB.$DOMAIN.conf
-cp $CURRENT_DIR/nginx.vhost.conf.template $CONFIG
+cp $CURRENT_DIR/$TEMPLATE $CONFIG
 $SED -i "s/@@HOSTNAME@@/$DOMAIN/g" $CONFIG
 $SED -i "s#@@PATH@@#\/srv\/www\/"$DOMAIN\/$SUB\/$PUBLIC_HTML_DIR"#g" $CONFIG
 $SED -i "s/@@LOG_PATH@@/\/srv\/www\/$DOMAIN\/$SUB\/_logs/g" $CONFIG
