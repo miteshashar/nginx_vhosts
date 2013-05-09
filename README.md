@@ -20,9 +20,8 @@ Nginx Template inspired by: http://rtcamp.com/tutorials/nginx-wordpress-fastcgi_
 Changelog:
 ============
 
-Created:   11/08/2011
-Modified:   07/01/2012
-Modified:   27/11/2012
-Modified: 05/06/2013 - Added support for sftp + /var/www < Matteo Crippa >
-Modified: 08/06/2013 - Moved to /srv/www and subdomain support < Matteo Crippa >
-Modified: 09/06/2013 - Added support with Wordpress dedicated template < Matteo Crippa >
+- 11/08/2011 Project created by Mitesh Ashar
+- 27/11/2012
+- 05/06/2013 Added support for sftp + /var/www
+- 08/06/2013 Moved to /srv/www and subdomain support
+- 09/06/2013 Added support with Wordpress dedicated template, changed php-fpm permission to www-data
