@@ -61,6 +61,7 @@ echo "Are you installing wordpress? (y/n)"
 read WP
 if [ $WP == "y" ]; then
     TEMPLATE='nginx.wordpress.vhost.conf.template'
+    echo "Remember to install W3 Total Cache plugin!!"
 else
     TEMPLATE='nginx.vhost.conf.template'
 fi
