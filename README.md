@@ -15,6 +15,8 @@ Credits:
 
 This script was inspired by the work of: http://www.sebdangerfield.me.uk/2012/05/nginx-and-php-fpm-bash-script-for-creating-new-vhosts-under-separate-fpm-pools/
 
+Nginx Template inspired by: http://rtcamp.com/tutorials/nginx-wordpress-fastcgi_cache-with-conditional-purging/
+
 Changelog:
 ============
 
