@@ -47,7 +47,7 @@ fi
 PUBLIC_HTML_DIR='/htdocs'
 
 # Ask for subdomain (default www)
-echo "Are you configuring the www or no-www domain (y/n)?"
+echo "Are you configuring the www domain (y/n)?"
 read CHANGEROOT
 if [ $CHANGEROOT == "n" ]; then
     echo "Enter the subdomain you are configuring: (without domain and extension)"
@@ -74,7 +74,7 @@ useradd $USERNAME
 # Now we need to copy the virtual host template
 CONFIG=$NGINX_CONFIG/$SUB.$DOMAIN.conf
 cp $CURRENT_DIR/$TEMPLATE $CONFIG
-$SED -i "s/@@HOSTNAME@@/$DOMAIN/g" $CONFIG
+$SED -i "s/@@HOSTNAME@@/$SUB.$DOMAIN/g" $CONFIG
 $SED -i "s#@@PATH@@#\/srv\/www\/"$DOMAIN\/$SUB\/$PUBLIC_HTML_DIR"#g" $CONFIG
 $SED -i "s/@@LOG_PATH@@/\/srv\/www\/$DOMAIN\/$SUB\/_logs/g" $CONFIG
 $SED -i "s#@@SOCKET@@#/var/run/"$SUB"."$DOMAIN"_fpm.sock#g" $CONFIG

@@ -1,10 +1,3 @@
-# force redirect www to non-www
-server {
-	listen 80;
-	server_name www.@@HOSTNAME@@;
-	return 301 $scheme://@@HOSTNAME@@$request_uri;
-}
-
 # server setup
 server {
   server_name @@HOSTNAME@@;
@@ -29,7 +22,6 @@ server {
 	}
 	
 	location ~ "^(.+\.php)($|/)" {
-	
         fastcgi_split_path_info ^(.+\.php)(.*)$;
  
         fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
@@ -37,7 +29,7 @@ server {
         fastcgi_param PATH_INFO $fastcgi_path_info;
 		fastcgi_param SERVER_NAME $host;
 		
-        fastcgi_pass   unix:@@SOCKET@@;
+            fastcgi_pass   unix:@@SOCKET@@;
         include        fastcgi_params;
     }
 
