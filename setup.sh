@@ -60,10 +60,14 @@ fi
 echo "Are you installing wordpress? (y/n)"
 read WP
 if [ $WP == "y" ]; then
-    TEMPLATE='nginx.wordpress.vhost.conf.template'
+    TEMPLATE='nginx.wordpress.vhost.conf.template'    
     echo "Remember to install W3 Total Cache plugin!!"
 else
-    TEMPLATE='nginx.vhost.conf.template'
+    if [ $SUB == "www" ]; then
+        TEMPLATE='nginx.vhost.conf.template'
+    else
+        TEMPLATE='nginx.no-www.vhost.conf.template'
+    fi
 fi
 
 # Create a new user
