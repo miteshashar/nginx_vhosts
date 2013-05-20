@@ -44,7 +44,7 @@ else
 fi
 
 # Keep default dir for deploy
-PUBLIC_HTML_DIR='/htdocs'
+PUBLIC_HTML_DIR='htdocs'
 
 # Ask for subdomain (default www)
 echo "Are you configuring the www domain (y/n)?"
@@ -96,6 +96,7 @@ cp $CURRENT_DIR/pool.conf.template $FPMCONF
 
 $SED -i "s/@@USER@@/$USERNAME/g" $FPMCONF
 $SED -i "s/@@DOMAIN@@/$DOMAIN/g" $FPMCONF
+$SED -i "s/@@SUB@@/$SUB/g" $FPMCONF
 $SED -i "s/@@HOME_DIR@@/\/srv\/www\/$DOMAIN\/$SUB/g" $FPMCONF
 $SED -i "s/@@START_SERVERS@@/$FPM_SERVERS/g" $FPMCONF
 $SED -i "s/@@MIN_SERVERS@@/$MIN_SERVERS/g" $FPMCONF

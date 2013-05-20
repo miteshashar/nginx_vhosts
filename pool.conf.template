@@ -2,7 +2,7 @@
 ; pool name ('www' here)
 [@@USER@@]
 
-listen = /var/run/@@DOMAIN@@_fpm.sock
+listen = /var/run/@@SUB@@.@@DOMAIN@@_fpm.sock
 
 ;listen.backlog = -1
 listen.allowed_clients = 127.0.0.1
