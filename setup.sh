@@ -84,7 +84,7 @@ echo "How many FPM servers would you like by default: (suggested 2)"
 read FPM_SERVERS
 echo "Min number of FPM servers would you like: (suggested 1)"
 read MIN_SERVERS
-echo "Max number of FPM servers would you like: (suggested 3)"
+echo "Max number of FPM servers would you like: (suggested 5)"
 read MAX_SERVERS
 # Now we need to create a new php fpm pool config
 FPMCONF="$PHP_INI_DIR/$SUB.$DOMAIN.pool.conf"
