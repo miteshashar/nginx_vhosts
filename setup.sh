@@ -70,7 +70,7 @@ else
     # Otherwise check if you are installing a PHP site
     echo "Are you installing a php site? (y/n)"
     read PHP
-    if [ $PHP == "n"]; then
+    if [ $PHP == "n" ]; then
         TEMPLATE='nginx.vhost.conf.nophp.conf.template'
     fi
 fi
@@ -91,7 +91,7 @@ $SED -i "s#@@PATH@@#\/srv\/www\/"$DOMAIN\/$SUB\/$PUBLIC_HTML_DIR"#g" $CONFIG
 $SED -i "s/@@LOG_PATH@@/\/srv\/www\/$DOMAIN\/$SUB\/_logs/g" $CONFIG
 $SED -i "s#@@SOCKET@@#/var/run/"$SUB"."$DOMAIN"_fpm.sock#g" $CONFIG
 
-if [ $PHP == "y"]
+if [ $PHP == "y" ]; then
     echo "How many FPM servers would you like by default: (suggested 2)"
     read FPM_SERVERS
     echo "Min number of FPM servers would you like: (suggested 1)"
