@@ -60,12 +60,20 @@ if [ $WP == "y" ]; then
     TEMPLATE='nginx.wordpress.vhost.conf.template'    
     echo "Remember to install W3 Total Cache plugin!!"
 else
-    if [ $SUB == "www" ]; then
-        TEMPLATE='nginx.vhost.conf.template'
+    # Otherwise check if you are installing a PHP site
+    echo "Are you installing a php site? (y/n)"
+    read PHP
+    if [ $PHP == "y" ]; then
+        if [ $SUB == "www" ]; then
+            TEMPLATE='nginx.vhost.conf.template'
+        else
+            TEMPLATE='nginx.no-www.vhost.conf.template'
+        fi
     else
-        TEMPLATE='nginx.no-www.vhost.conf.template'
+        TEMPLATE=''
     fi
 fi
+
 
 # Create a new user
 echo "Please specify the sftp username for this site:"
@@ -80,26 +88,29 @@ $SED -i "s#@@PATH@@#\/srv\/www\/"$DOMAIN\/$SUB\/$PUBLIC_HTML_DIR"#g" $CONFIG
 $SED -i "s/@@LOG_PATH@@/\/srv\/www\/$DOMAIN\/$SUB\/_logs/g" $CONFIG
 $SED -i "s#@@SOCKET@@#/var/run/"$SUB"."$DOMAIN"_fpm.sock#g" $CONFIG
 
-echo "How many FPM servers would you like by default: (suggested 2)"
-read FPM_SERVERS
-echo "Min number of FPM servers would you like: (suggested 1)"
-read MIN_SERVERS
-echo "Max number of FPM servers would you like: (suggested 5)"
-read MAX_SERVERS
-# Now we need to create a new php fpm pool config
-FPMCONF="$PHP_INI_DIR/$SUB.$DOMAIN.pool.conf"
+if [ $TEMPLATE != ""]
+    echo "How many FPM servers would you like by default: (suggested 2)"
+    read FPM_SERVERS
+    echo "Min number of FPM servers would you like: (suggested 1)"
+    read MIN_SERVERS
+    echo "Max number of FPM servers would you like: (suggested 5)"
+    read MAX_SERVERS
+    
+    # Now we need to create a new php fpm pool config
+    FPMCONF="$PHP_INI_DIR/$SUB.$DOMAIN.pool.conf"
 
-cp $CURRENT_DIR/pool.conf.template $FPMCONF
+    cp $CURRENT_DIR/pool.conf.template $FPMCONF
 
-$SED -i "s/@@USER@@/$USERNAME/g" $FPMCONF
-$SED -i "s/@@DOMAIN@@/$DOMAIN/g" $FPMCONF
-$SED -i "s/@@SUB@@/$SUB/g" $FPMCONF
-$SED -i "s/@@HOME_DIR@@/\/srv\/www\/$DOMAIN\/$SUB/g" $FPMCONF
-$SED -i "s/@@START_SERVERS@@/$FPM_SERVERS/g" $FPMCONF
-$SED -i "s/@@MIN_SERVERS@@/$MIN_SERVERS/g" $FPMCONF
-$SED -i "s/@@MAX_SERVERS@@/$MAX_SERVERS/g" $FPMCONF
-MAX_CHILDS=$((MAX_SERVERS+START_SERVERS))
-$SED -i "s/@@MAX_CHILDS@@/$MAX_CHILDS/g" $FPMCONF
+    $SED -i "s/@@USER@@/$USERNAME/g" $FPMCONF
+    $SED -i "s/@@DOMAIN@@/$DOMAIN/g" $FPMCONF
+    $SED -i "s/@@SUB@@/$SUB/g" $FPMCONF
+    $SED -i "s/@@HOME_DIR@@/\/srv\/www\/$DOMAIN\/$SUB/g" $FPMCONF
+    $SED -i "s/@@START_SERVERS@@/$FPM_SERVERS/g" $FPMCONF
+    $SED -i "s/@@MIN_SERVERS@@/$MIN_SERVERS/g" $FPMCONF
+    $SED -i "s/@@MAX_SERVERS@@/$MAX_SERVERS/g" $FPMCONF
+    MAX_CHILDS=$((MAX_SERVERS+START_SERVERS))
+    $SED -i "s/@@MAX_CHILDS@@/$MAX_CHILDS/g" $FPMCONF
+fi
 
 # disable shell for user
 usermod -s /bin/false $USERNAME
@@ -127,7 +138,9 @@ chmod -R g+rw /srv/www/$DOMAIN/$SUB/$PUBLIC_HTML_DIR
 
 # restart services
 $NGINX_INIT reload
-$PHP_FPM_INIT restart
+if [ $TEMPLATE != ""]
+    $PHP_FPM_INIT restart # restart only if is a php or wp site
+fi
 
 echo -e "\nSite Created for $SUB.$DOMAIN with PHP support"
 echo -e "\n\nIMPORTANT you need to set $USERNAME password using passwd"
