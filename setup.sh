@@ -1,20 +1,17 @@
 #!/bin/bash
 # @author: Seb Dangerfield, Matteo Crippa
 # http://www.sebdangerfield.me.uk/?p=513 
-# Created:   11/08/2011
-# Modified:   07/01/2012
-# Modified:   27/11/2012
-# Modified: 05/06/2013 - Added support for sftp + /var/www < Matteo Crippa >
+# Created:  11/08/2011
+# Modified: 07/01/2012
+# Modified: 27/11/2012
+# Modified: 05/06/2013 - Added support for sftp + /var/www 
 # Modified: 08/06/2013 - Moved to /srv/www and subdomain support
 # Modified: 09/06/2013 - Added support with Wordpress dedicated template
-
-# TODO: new way to handle, system asks for domain, then for subdomain (www and no-www) are used at the same way.
-# TODO: testing
+# Modified: 18/07/2013 - Optimized php5 conf and fix inode issue due to sessions not purged
 
 # FS structure:
 # /srv/www/domain/subdomain/htdocs
-# /srv/www/domain/subdomain/_session
-# /srv/www/domain/subdomain/_logs
+# /srv/www/domain/subdomain/logs
 
 
 # Modify the following to match your system
@@ -87,7 +84,7 @@ echo "How many FPM servers would you like by default: (suggested 2)"
 read FPM_SERVERS
 echo "Min number of FPM servers would you like: (suggested 1)"
 read MIN_SERVERS
-echo "Max number of FPM servers would you like: (suggested 5)"
+echo "Max number of FPM servers would you like: (suggested 3)"
 read MAX_SERVERS
 # Now we need to create a new php fpm pool config
 FPMCONF="$PHP_INI_DIR/$SUB.$DOMAIN.pool.conf"

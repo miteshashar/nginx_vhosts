@@ -47,7 +47,10 @@ request_terminate_timeout = 30s
  
 chdir = /
  
-;catch_workers_output = yes
- 
-php_admin_value[session.save_path] = "@@HOME_DIR@@/_sessions"
+catch_workers_output = yes
+php_admin_value[error_reporting] = E_ALL & ~E_NOTICE & ~E_WARNING & ~E_STRICT & ~E_DEPRECATED
+php_admin_flag[display_errors] = off
+php_admin_flag[display_startup_errors] = off
+php_admin_value[error_log] = "@@HOME_DIR@@/logs/error-php.log" 
+
 php_admin_value[open_basedir] = "@@HOME_DIR@@:/usr/share/pear:/usr/share/php:/tmp:/usr/local/lib/php:/var/run"
