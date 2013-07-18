@@ -59,20 +59,23 @@ read WP
 if [ $WP == "y" ]; then
     TEMPLATE='nginx.wordpress.vhost.conf.template'    
     echo "Remember to install W3 Total Cache plugin!!"
+    PHP='y'
 else
+    if [ $SUB == "www" ]; then
+        TEMPLATE='nginx.vhost.conf.template'
+    else
+        TEMPLATE='nginx.no-www.vhost.conf.template'
+    fi
+    
     # Otherwise check if you are installing a PHP site
     echo "Are you installing a php site? (y/n)"
     read PHP
-    if [ $PHP == "y" ]; then
-        if [ $SUB == "www" ]; then
-            TEMPLATE='nginx.vhost.conf.template'
-        else
-            TEMPLATE='nginx.no-www.vhost.conf.template'
-        fi
-    else
-        TEMPLATE=''
+    if [ $PHP == "n"]; then
+        TEMPLATE='nginx.vhost.conf.nophp.conf.template'
     fi
 fi
+
+
 
 
 # Create a new user
@@ -88,7 +91,7 @@ $SED -i "s#@@PATH@@#\/srv\/www\/"$DOMAIN\/$SUB\/$PUBLIC_HTML_DIR"#g" $CONFIG
 $SED -i "s/@@LOG_PATH@@/\/srv\/www\/$DOMAIN\/$SUB\/_logs/g" $CONFIG
 $SED -i "s#@@SOCKET@@#/var/run/"$SUB"."$DOMAIN"_fpm.sock#g" $CONFIG
 
-if [ $TEMPLATE != ""]
+if [ $PHP == "y"]
     echo "How many FPM servers would you like by default: (suggested 2)"
     read FPM_SERVERS
     echo "Min number of FPM servers would you like: (suggested 1)"
