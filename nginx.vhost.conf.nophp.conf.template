@@ -1,0 +1,22 @@
+upstream app_@@HOSTNAME@@{
+		server 127.0.0.1:3000;
+}
+
+server {
+		server_name @@HOSTNAME@@;
+
+		listen 80;
+
+		access_log @@LOG_PATH@@/access.log;
+		error_log @@LOG_PATH@@/error.log;
+
+		location /{
+				proxy_set_header X-Real-IP $remote_addr;
+				proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+				proxy_set_header Host $http_host;
+				proxy_set_header X-NginX-Proxy true;
+
+				proxy_pass http://app_@@HOSTNAME@@/;
+				proxy_redirect off;
+		}
+}

@@ -141,9 +141,7 @@ chmod -R g+rw /srv/www/$DOMAIN/$SUB/$PUBLIC_HTML_DIR
 
 # restart services
 $NGINX_INIT reload
-if [ $TEMPLATE != ""]
-    $PHP_FPM_INIT restart # restart only if is a php or wp site
-fi
+$PHP_FPM_INIT restart
 
 echo -e "\nSite Created for $SUB.$DOMAIN with PHP support"
 echo -e "\n\nIMPORTANT you need to set $USERNAME password using passwd"
