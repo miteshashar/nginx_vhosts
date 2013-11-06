@@ -8,10 +8,11 @@
 # Modified: 08/06/2013 - Moved to /srv/www and subdomain support
 # Modified: 09/06/2013 - Added support with Wordpress dedicated template
 # Modified: 18/07/2013 - Optimized php5 conf and fix inode issue due to sessions not purged
+# Modified: 06/11/2013 - Added support for log rotate
 
 # FS structure:
 # /srv/www/domain/subdomain/htdocs
-# /srv/www/domain/subdomain/logs
+# /srv/www/domain/subdomain/_logs
 
 
 # Modify the following to match your system
@@ -20,6 +21,7 @@ NGINX_SITES_ENABLED='/etc/nginx/sites-enabled'
 PHP_INI_DIR='/etc/php5/fpm/pool.d'
 NGINX_INIT='/etc/init.d/nginx'
 PHP_FPM_INIT='/etc/init.d/php5-fpm'
+LOG_ROTATE='/etc/logrotate.d/nginx'
 # --------------END 
 SED=`which sed`
 CURRENT_DIR=`dirname $0`
@@ -138,6 +140,12 @@ chown root:root /srv/www/$DOMAIN/$SUB
 # set directory permission
 chown -R $USERNAME:$USERNAME /srv/www/$DOMAIN/$SUB/$PUBLIC_HTML_DIR 
 chmod -R g+rw /srv/www/$DOMAIN/$SUB/$PUBLIC_HTML_DIR
+
+# add logrotate check for logs
+echo -e "\nAdding logrotate support for $SUB.$DOMAIN"
+cat $CURRENT_DIR/logrotate.template >> $LOG_ROTATE
+$SED -i "s/@@LOG_PATH@@/\/srv\/www\/$DOMAIN\/$SUB\/_logs/g" $LOG_ROTATE
+
 
 # restart services
 $NGINX_INIT reload
