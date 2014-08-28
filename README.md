@@ -17,6 +17,15 @@ This script was inspired by the work of: http://www.sebdangerfield.me.uk/2012/05
 
 Nginx Template inspired by: http://rtcamp.com/tutorials/nginx-wordpress-fastcgi_cache-with-conditional-purging/
 
+
+Donations
+===========================
+
+This work is free of any charge, but if you want to donate for a beer or a coffee feel free to do it!
+
+`Bitcoin: 1BWmKKaDzyvVqNQgZNUWV7rcU91MMqPAXT`
+
+
 Changelog:
 ============
 
