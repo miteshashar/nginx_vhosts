@@ -9,6 +9,7 @@
 # Modified: 09/06/2013 - Added support with Wordpress dedicated template
 # Modified: 18/07/2013 - Optimized php5 conf and fix inode issue due to sessions not purged
 # Modified: 06/11/2013 - Added support for log rotate
+# Modified: 13/07/2015 - Fix autorestart for php5-fpm
 
 # FS structure:
 # /srv/www/domain/subdomain/htdocs
@@ -19,8 +20,8 @@
 NGINX_CONFIG='/etc/nginx/sites-available'
 NGINX_SITES_ENABLED='/etc/nginx/sites-enabled'
 PHP_INI_DIR='/etc/php5/fpm/pool.d'
-NGINX_INIT='/etc/init.d/nginx'
-PHP_FPM_INIT='/etc/init.d/php5-fpm'
+NGINX_INIT='service nginx restart'
+PHP_FPM_INIT='service php5-fpm restart'
 LOG_ROTATE='/etc/logrotate.d/nginx'
 # --------------END 
 SED=`which sed`
@@ -148,8 +149,8 @@ $SED -i "s/@@LOG_PATH@@/\/srv\/www\/$DOMAIN\/$SUB\/_logs/g" $LOG_ROTATE
 
 
 # restart services
-$NGINX_INIT reload
-$PHP_FPM_INIT restart
+$NGINX_INIT
+$PHP_FPM_INIT
 
 echo -e "\nSite Created for $SUB.$DOMAIN with PHP support"
 echo -e "\n\nIMPORTANT you need to set $USERNAME password using passwd"
