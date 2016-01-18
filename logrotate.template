@@ -1,0 +1,19 @@
+
+@@LOG_PATH@@/*.log {
+																weekly
+																missingok
+																rotate 52
+																compress
+																delaycompress
+																notifempty
+																create 0640 www-data root
+																sharedscripts
+																prerotate
+																																if [ -d /etc/logrotate.d/httpd-prerotate ]; then \
+																																																run-parts /etc/logrotate.d/httpd-prerotate; \
+																																fi \
+																endscript
+																postrotate
+																																[ ! -f /run/nginx.pid ] || kill -USR1 `cat /run/nginx.pid`
+																endscript
+}
