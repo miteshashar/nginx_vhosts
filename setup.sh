@@ -27,11 +27,13 @@ LOG_ROTATE='/etc/logrotate.d/nginx'
 SED=`which sed`
 CURRENT_DIR=`dirname $0`
 
+
 if [ -z $1 ]; then
     echo "No domain name given"
     exit 1
 fi
 DOMAIN=$1
+HOSTNAME=$DOMAIN
 
 # check the domain is valid!
 PATTERN="^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$";
@@ -52,6 +54,7 @@ read CHANGEROOT
 if [ $CHANGEROOT == "n" ]; then
     echo "Enter the subdomain you are configuring: (without domain and extension)"
     read SUB
+    HOSTNAME="$SUB.$DOMAIN"
 else
     SUB='www'
 fi
@@ -89,7 +92,7 @@ useradd $USERNAME
 # Now we need to copy the virtual host template
 CONFIG=$NGINX_CONFIG/$SUB.$DOMAIN.conf
 cp $CURRENT_DIR/$TEMPLATE $CONFIG
-$SED -i "s/@@HOSTNAME@@/$SUB.$DOMAIN/g" $CONFIG
+$SED -i "s/@@HOSTNAME@@/$HOSTNAME/g" $CONFIG
 $SED -i "s#@@PATH@@#\/srv\/www\/"$DOMAIN\/$SUB\/$PUBLIC_HTML_DIR"#g" $CONFIG
 $SED -i "s/@@LOG_PATH@@/\/srv\/www\/$DOMAIN\/$SUB\/_logs/g" $CONFIG
 $SED -i "s#@@SOCKET@@#/var/run/"$SUB"."$DOMAIN"_fpm.sock#g" $CONFIG
